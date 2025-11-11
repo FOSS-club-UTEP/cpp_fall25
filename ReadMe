@@ -30,17 +30,10 @@ Windows (PowerShell):
 -----------------------------------------
 Building the Project
 -----------------------------------------
+Configure and build:
+  cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+  cmake --build build -j
 
-# Configure and Build (default: ASan + UBSan)
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
-cmake --build build -j
-
-# To disable sanitizers (for normal testing)
-cmake -S . -B build-nosan \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DENABLE_ASAN=OFF \
-  -DENABLE_UBSAN=OFF
-cmake --build build-nosan -j
 
 -----------------------------------------
 Switching Between Versions
@@ -55,21 +48,13 @@ Running the Executable
 -----------------------------------------
 macOS / Linux:
   ./build/snake
-  ./build-nosan/snake   # no sanitizer build
+  ./build-release/snake    # release build
 
 Windows (PowerShell or CMD):
   .\build\Debug\snake.exe
-  .\build-nosan\Release\snake.exe
+  .\build-release\Release\snake.exe
 
 
------------------------------------------
-Leak Checking
------------------------------------------
-macOS:
-  MallocStackLogging=1 leaks --atExit -- ./build/snake
-
-Linux / WSL:
-  ASAN_OPTIONS=detect_leaks=1 ./build/snake
 
 
 -----------------------------------------

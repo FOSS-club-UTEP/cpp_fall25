@@ -39,7 +39,7 @@ if(NOT raylib_FOUND)
 endif()
 
 # ---------- create your game -------------------------------------------------
-add_executable(snake fixed.cpp)
+add_executable(snake main.cpp)
 
 # Link the library (target name differs between “find” and “fetch”)
 if(TARGET raylib)          # produced by FetchContent

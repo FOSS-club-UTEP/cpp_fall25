@@ -1,0 +1,79 @@
+Snake Memory— C++ + ASan Workshop
+=========================================
+
+This project is a small C++ / raylib game used to demonstrate AddressSanitizer (ASan) 
+and memory management debugging. 
+
+-----------------------------------------
+Overview
+-----------------------------------------
+The game is a simple Snake clone with two versions:
+
+  Buggy - Includes intentional memory leaks and out-of-bounds writes 
+          for students to diagnose using ASan and leak tools.
+
+  Fixed - Clean version showing how to correctly manage heap memory 
+          with delete[], RAII, and STL containers.
+
+
+-----------------------------------------
+Setup Instructions
+-----------------------------------------
+macOS:
+  brew install raylib llvm
+  export PATH=/opt/homebrew/opt/llvm/bin:$PATH
+
+Windows (PowerShell):
+  vcpkg install raylib:x64-windows
+
+
+-----------------------------------------
+Building the Project
+-----------------------------------------
+Configure and Build:
+  cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+  cmake --build build -j
+
+Switch between versions:
+  In CMakeLists.txt edit:
+    set(SOURCE main_buggy.cpp)
+  or:
+    set(SOURCE main_fixed.cpp)
+
+Run:
+  ./build/snake
+Windows:
+  .\build\snake.exe
+
+-----------------------------------------
+Leak Checking
+-----------------------------------------
+macOS:
+  MallocStackLogging=1 leaks --atExit -- ./build/snake
+
+Linux / WSL:
+  ASAN_OPTIONS=detect_leaks=1 ./build/snake
+
+
+-----------------------------------------
+Key Learning Outcomes
+-----------------------------------------
+- Detecting heap-buffer-overflows with AddressSanitizer
+- Identifying memory leaks and ownership problems
+- Understanding RAII and how destructors prevent leaks
+- Using STL containers (std::vector, std::unique_ptr) instead of raw new/delete
+- Reading ASan stack traces effectively
+
+
+-----------------------------------------
+Controls
+-----------------------------------------
+Arrow keys - Move snake
+ESC - Exit game
+
+
+-----------------------------------------
+Credit
+-----------------------------------------
+Created for C++ memory-debugging workshops.
+Dependencies: raylib and LLVM AddressSanitizer

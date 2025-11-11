@@ -1,0 +1,3 @@
+/Users/raycast/Desktop/foss/cpp/build/CMakeFiles/snake.dir
+/Users/raycast/Desktop/foss/cpp/build/CMakeFiles/edit_cache.dir
+/Users/raycast/Desktop/foss/cpp/build/CMakeFiles/rebuild_cache.dir

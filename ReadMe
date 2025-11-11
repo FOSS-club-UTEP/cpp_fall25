@@ -23,8 +23,16 @@ macOS:
   brew install raylib llvm
   export PATH=/opt/homebrew/opt/llvm/bin:$PATH
 
-Windows (PowerShell):
-  vcpkg install raylib:x64-windows
+Windows:
+	CMake:
+		https://cmake.org/download/
+
+	mingw (GCC 15.2.0):
+		https://winlibs.com/
+		move MinGW to `C:\Program Files\mingw32`
+		Add `C:\Program Files\mingw32` to Environment Variables Path
+
+  run build instructions
 
 
 -----------------------------------------

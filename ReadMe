@@ -30,20 +30,37 @@ Windows (PowerShell):
 -----------------------------------------
 Building the Project
 -----------------------------------------
-Configure and Build:
-  cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
-  cmake --build build -j
 
-Switch between versions:
-  In CMakeLists.txt edit:
-    set(SOURCE main_buggy.cpp)
-  or:
-    set(SOURCE main_fixed.cpp)
+# Configure and Build (default: ASan + UBSan)
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build -j
 
-Run:
+# To disable sanitizers (for normal testing)
+cmake -S . -B build-nosan \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DENABLE_ASAN=OFF \
+  -DENABLE_UBSAN=OFF
+cmake --build build-nosan -j
+
+-----------------------------------------
+Switching Between Versions
+-----------------------------------------
+In CMakeLists.txt, edit the source line:
+  set(SOURCE main_buggy.cpp)
+or:
+  set(SOURCE main_fixed.cpp)
+
+-----------------------------------------
+Running the Executable
+-----------------------------------------
+macOS / Linux:
   ./build/snake
-Windows:
-  .\build\snake.exe
+  ./build-nosan/snake   # no sanitizer build
+
+Windows (PowerShell or CMD):
+  .\build\Debug\snake.exe
+  .\build-nosan\Release\snake.exe
+
 
 -----------------------------------------
 Leak Checking

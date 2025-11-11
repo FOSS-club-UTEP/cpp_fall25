@@ -33,6 +33,7 @@ Building the Project
 Configure and build:
   cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
   cmake --build build -j
+	cmake -E copy utep_fight_song.mp3 .\build\Debug\snake
 
 
 -----------------------------------------

@@ -52,6 +52,13 @@ int main() {
     InitWindow(W * SIZE, H * SIZE, "Snake + ASan Lab");
     SetTargetFPS(60);
 
+    // AUDIO: initialize audio device
+    InitAudioDevice();
+
+    // AUDIO: load and start UTEP fight song (looped music stream)
+    Music fightSong = LoadMusicStream("utep_fight_song.mp3");
+    PlayMusicStream(fightSong);
+
     std::deque<Cell> snake;
     snake.push_front({W / 2, H / 2});
 
@@ -137,6 +144,11 @@ int main() {
     }
 
     // BUG: 
+
+    // AUDIO: cleanup music + audio device
+    UnloadMusicStream(fightSong);
+    CloseAudioDevice();
+
 
     CloseWindow();
     return 0;

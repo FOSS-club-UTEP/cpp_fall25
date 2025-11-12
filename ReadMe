@@ -1,8 +1,7 @@
 Snake Memory— C++ + ASan Workshop
 =========================================
 
-This project is a small C++ / raylib game used to demonstrate AddressSanitizer (ASan) 
-and memory management debugging. 
+This project is a small C++ / raylib game used to memory management debugging. 
 
 -----------------------------------------
 Overview
@@ -19,7 +18,11 @@ The game is a simple Snake clone with two versions:
 -----------------------------------------
 Setup Instructions
 -----------------------------------------
-macOS:
+macOS (The Goated OS):
+  xcode-select --install
+  clang --version
+
+  Assuming You have homebrew
   brew install raylib llvm
   export PATH=/opt/homebrew/opt/llvm/bin:$PATH
 
@@ -73,7 +76,6 @@ Key Learning Outcomes
 - Identifying memory leaks and ownership problems
 - Understanding RAII and how destructors prevent leaks
 - Using STL containers (std::vector, std::unique_ptr) instead of raw new/delete
-- Reading ASan stack traces effectively
 
 
 -----------------------------------------

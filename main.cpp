@@ -16,18 +16,17 @@ static std::uniform_int_distribution<int> ry(0, H - 1);
 
 // --- Intentional bug helpers ---
 
-// Bug type 1: object that leaks its internal buffer
+
 struct LeakBuffer {
     int n;
     int* data;
 
     LeakBuffer(int n)
         : n(n), data(new int[n]) {
-        // no init needed
     }
 
     ~LeakBuffer() {
-        // BUG: never frees -> leak
+
     }
 
     void touch() {
@@ -36,12 +35,11 @@ struct LeakBuffer {
     }
 };
 
-// Bug type 2: per-food allocations that are never freed
-static std::vector<int*> g_foodLeaks; // grows forever
+// Vector to track each food we find per-food allocations 
+static std::vector<int*> g_foodLeaks; 
 
-// Bug type 3: one heap OOB write for ASan to scream about
+// Useless Write  
 void buggyWrite(int* arr, int len) {
-    // BUG: writes one past end
     if (len > 0) {
         arr[len] = 123; 
     }
@@ -63,7 +61,7 @@ int main() {
     float acc = 0.0f;
     bool alive = true;
 
-    // Global leak
+    
     g_leaky = new LeakBuffer(16);
     g_leaky->touch();
 
@@ -93,20 +91,22 @@ int main() {
 
             snake.push_front(head);
 
+            // We found food!
             if (alive && head.x == food.x && head.y == food.y) {
                 // ate food -> grow
                 food = {rx(rng), ry(rng)};
 
-                // BUG: leak on every food
+                
                 int* chunk = new int[256];
                 chunk[0] = (int)snake.size();
-                g_foodLeaks.push_back(chunk); // never freed
+                g_foodLeaks.push_back(chunk); 
 
-                // BUG: trigger heap-buffer-overflow sometimes
+                // trigger something important obviously
                 if (snake.size() % 5 == 0) {
-                    int* small = new int[4];
-                    buggyWrite(small, 4); // writes at index 4
-                    // missing delete[] small; -> also leaked
+                    int* small = new int[1];
+                    buggyWrite(small, 1); // writes
+                    delete [] small; 
+                    
                 }
             } else {
                 snake.pop_back();
@@ -123,19 +123,20 @@ int main() {
         for (size_t i = 0; i < snake.size(); ++i) {
             auto c = snake[i];
             // Head red, body darker red
-            DrawRectangle(c.x * SIZE, c.y * SIZE, SIZE, SIZE,
-                        i == 0 ? RED : MAROON);
+            DrawRectangle(c.x * SIZE, c.y * SIZE, SIZE, SIZE, i == 0 ? RED : MAROON);
         }
 
 
         if (!alive) {
-            DrawText("Game Over - Press ESC", 20, 20, 20, RAYWHITE);
+            DrawText(TextFormat("Score: %d", (int) g_foodLeaks.size()), 20, 20, 20, RAYWHITE);
+            DrawText("Game Over - Press ESC", 20, 50, 20, RAYWHITE);
         }
+
 
         EndDrawing();
     }
 
-    // BUG: never delete g_leaky or g_foodLeaks contents
+    // BUG: 
 
     CloseWindow();
     return 0;

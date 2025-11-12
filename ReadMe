@@ -90,3 +90,12 @@ Credit
 -----------------------------------------
 Created for C++ memory-debugging workshops.
 Dependencies: raylib and LLVM AddressSanitizer
+
+
+-----------------------------------------
+Leaks : This will only work on mac sorry 
+-----------------------------------------
+
+clang++ -std=c++20 -g -O0 main.cpp -o snake_nosan $(pkg-config --cflags --libs raylib)
+
+MallocStackLogging=1 leaks -quiet -atExit -- ./snake_nosan
